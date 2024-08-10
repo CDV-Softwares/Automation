@@ -3,4 +3,4 @@ import { IProductInput } from './interfaces/IProductInput';
 import IUsecase from './interfaces/IUsecase';
 import { ProductRepository } from './interfaces/product.repository';
 
-export { IProduct, IUsecase, ProductRepository, IProductInput };
+export type { IProduct, IUsecase, ProductRepository, IProductInput };

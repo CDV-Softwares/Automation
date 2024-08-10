@@ -22,7 +22,7 @@ function App(): JSX.Element {
       console.log(import.meta.env.VITE_SERVER_URL)
 
       setFormState({ error: '', loading: true })
-      const res = await fetch(import.meta.env.VITE_SERVER_URL + '/new-product', {
+      const res = await fetch(import.meta.env.VITE_SERVER_URL + '/product/register', {
         method: 'POST',
         body: JSON.stringify(formInputs),
         headers: {
