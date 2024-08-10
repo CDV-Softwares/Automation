@@ -1,27 +1,68 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 function App(): JSX.Element {
-  const [data, setData] = useState<string>('')
+  const [formState, setFormState] = useState<{ loading: boolean; error: string }>({
+    loading: false,
+    error: ''
+  })
+  const [formInputs, setFormInputs] = useState<{
+    name: string
+    brand: string
+    model: string
+    year: string
+    code: string
+  }>({
+    name: '',
+    brand: '',
+    model: '',
+    year: '',
+    code: ''
+  })
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      const res = await fetch('http://localhost:3000/')
+  const onSubmit = async (e): Promise<void> => {
+    e.preventDefault()
+    try {
+      console.log(import.meta.env.VITE_SERVER_URL)
+
+      setFormState({ error: '', loading: true })
+      const res = await fetch(import.meta.env.VITE_SERVER_URL + '/new-product', {
+        method: 'POST',
+        body: JSON.stringify(formInputs),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
       const json = await res.json()
-
-      if (!('message' in json)) return
       console.log(json)
-      setData(json.message as string)
+    } catch (err) {
+      setFormState((p) => ({ ...p, error: err instanceof Error ? err.message : 'Error on submit' }))
+    } finally {
+      setFormState((p) => ({ ...p, loading: false }))
     }
+  }
 
-    fetchData()
-  }, [])
-  console.log(data)
+  const onInputChange = ({ target }: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = target
+    setFormInputs((p) => ({ ...p, [name]: value }))
+  }
 
   return (
-    <>
-      <h1 className="ts">Orkon</h1>
-      <h1 className="ts">{data.length ? data : 'Loading...'}</h1>
-    </>
+    <main>
+      <h1 className="ts">Automation</h1>
+      <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <input onChange={onInputChange} type="text" name="name" placeholder="name" />
+        <input onChange={onInputChange} type="text" name="brand" placeholder="brand" />
+        <input onChange={onInputChange} type="text" name="model" placeholder="model" />
+        <input onChange={onInputChange} type="text" name="year" placeholder="year" />
+        <input onChange={onInputChange} type="text" name="code" placeholder="code" />
+        <button className="ts" style={{ padding: '.5rem' }} disabled={formState.loading}>
+          {formState.loading ? 'Loading' : 'Start'}
+        </button>
+      </form>
+      <footer>
+        <small>by @vitosdeveloper</small>
+      </footer>
+    </main>
   )
 }
 
