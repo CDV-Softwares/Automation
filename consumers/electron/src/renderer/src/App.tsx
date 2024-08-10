@@ -1,17 +1,14 @@
 import { ChangeEvent, useState } from 'react'
+import IProduct from 'shared/interfaces/IPrroduct'
+// import IProduct from '@shared/interfaces/IPoduct.ts'
 
 function App(): JSX.Element {
   const [formState, setFormState] = useState<{ loading: boolean; error: string }>({
     loading: false,
     error: ''
   })
-  const [formInputs, setFormInputs] = useState<{
-    name: string
-    brand: string
-    model: string
-    year: string
-    code: string
-  }>({
+  const [formInputs, setFormInputs] = useState<IProduct>({
+    id: '',
     name: '',
     brand: '',
     model: '',
@@ -50,6 +47,7 @@ function App(): JSX.Element {
     <main>
       <h1 className="ts">Automation</h1>
       <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <input onChange={onInputChange} type="text" name="id" placeholder="id" />
         <input onChange={onInputChange} type="text" name="name" placeholder="name" />
         <input onChange={onInputChange} type="text" name="brand" placeholder="brand" />
         <input onChange={onInputChange} type="text" name="model" placeholder="model" />
