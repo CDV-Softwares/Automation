@@ -1,18 +1,14 @@
 import { Request, Response } from 'express';
-import { IProduct, IProductRepository } from 'shared';
+import { IProductService } from 'shared';
 import IProductController from './interfaces/IProductController';
-import { PuppeteerNode } from 'puppeteer';
 import { ProductInputMapper, RegisterProductUsecase } from 'application';
 
 export default class ProductController implements IProductController {
-  constructor(
-    private registerProductUsecase: RegisterProductUsecase.Usecase,
-    public puppeteer: PuppeteerNode
-  ) {}
+  constructor(private registerProductUsecase: RegisterProductUsecase.Usecase) {}
   async register(
     req: Request,
     res: Response
-  ): Promise<Response<IProductRepository.RegisterResult>> {
+  ): Promise<Response<IProductService.RegisterResult>> {
     try {
       const { id, name, brand, model, year, code } = req.body;
       await this.registerProductUsecase.execute(

@@ -1,6 +1,6 @@
 import IProduct from './interfaces/IProduct';
 import IProductInput from './interfaces/IProductInput';
 import IUsecase from './interfaces/IUsecase';
-import { IProductRepository } from './interfaces/IProductRepository';
+import { IProductService } from './interfaces/IProductService';
 
-export type { IProduct, IUsecase, IProductRepository, IProductInput };
+export type { IProduct, IUsecase, IProductService, IProductInput };

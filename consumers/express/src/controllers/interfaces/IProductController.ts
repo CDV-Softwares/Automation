@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
-import { PuppeteerNode } from 'puppeteer';
-import { IProductRepository } from 'shared';
+import { IProductService } from 'shared';
 
 export default interface IProductController {
-  puppeteer: PuppeteerNode;
   register(
     req: Request,
     res: Response
-  ): Promise<Response<IProductRepository.RegisterResult>>;
+  ): Promise<Response<IProductService.RegisterResult>>;
 }
