@@ -52,7 +52,7 @@ function App(): JSX.Element {
         <input onChange={onInputChange} type="text" name="brand" placeholder="brand" />
         <input onChange={onInputChange} type="text" name="model" placeholder="model" />
         <input onChange={onInputChange} type="text" name="year" placeholder="year" />
-        <input onChange={onInputChange} type="text" name="code" placeholder="code" />
+        <input onChange={onInputChange} type="text" name="code" placeholder="barcode" />
         <button className="ts" style={{ padding: '.5rem' }} disabled={formState.loading}>
           {formState.loading ? 'Loading' : 'Start'}
         </button>

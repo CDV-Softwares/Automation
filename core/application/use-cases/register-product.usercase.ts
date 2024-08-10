@@ -8,7 +8,7 @@ export namespace RegisterProductUsercase {
 
   export class Usecase implements IUsercase<Input, Output> {
     constructor(private productRepository: ProductRepository.Repository) {}
-    async execute(product: IProductInput) {
+    async execute(product: Input) {
       return await this.productRepository.register(product);
     }
   }

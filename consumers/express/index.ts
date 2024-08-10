@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 3000;
-import { RegisterProductUsercase } from 'application';
 import { Request, Response } from 'express';
 import puppeteer, { Browser } from 'puppeteer';
 
@@ -12,8 +11,8 @@ app.use(express.json());
 
 app.post('/new-product', async (req: Request, res: Response) => {
   try {
-    const { name, brand, model, year, code } = req.body;
-    console.log(name, brand, model, year, code);
+    const { id, name, brand, model, year, code } = req.body;
+    console.log(id, name, brand, model, year, code);
 
     await run();
     res.json({ message: 'Done.' });
