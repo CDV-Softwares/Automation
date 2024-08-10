@@ -1,15 +1,7 @@
-import IProduct from '../../../shared/interfaces/IPrroduct';
+import IProduct from '../../../shared/interfaces/IProduct';
 
-export default class Product {
-  private title: string;
-  constructor(private props: IProduct) {
-    this.title = `${props.name} ${props.brand} ${props.model} ${props.year} ${props.code}`;
-  }
-
-  getTitle() {
-    return this.title;
-  }
-
+export default class Product implements IProduct {
+  constructor(private props: IProduct) {}
   get id() {
     return this.props.id;
   }

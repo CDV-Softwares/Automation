@@ -1,14 +1,14 @@
-import IProduct from '../../../shared/interfaces/IProduct';
+import { IProductInput } from '../../../shared/interfaces/IProductInput';
 import IUsercase from '../../../shared/interfaces/IUsecase';
 import { ProductRepository } from '../../../shared/interfaces/product.repository';
 
 export namespace RegisterProductUsercase {
-  export type Input = IProduct;
+  export type Input = IProductInput;
   export type Output = ProductRepository.RegisterResult;
 
   export class Usecase implements IUsercase<Input, Output> {
     constructor(private productRepository: ProductRepository.Repository) {}
-    async execute(product: IProduct) {
+    async execute(product: IProductInput) {
       return await this.productRepository.register(product);
     }
   }

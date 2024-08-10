@@ -1,4 +1,4 @@
-import IProduct from './IProduct';
+import { IProductInput } from './IProductInput';
 
 export namespace ProductRepository {
   export type RegisterResult = {
@@ -7,6 +7,6 @@ export namespace ProductRepository {
   };
 
   export interface Repository {
-    register(product: IProduct): Promise<RegisterResult>;
+    register(product: IProductInput): Promise<RegisterResult>;
   }
 }
