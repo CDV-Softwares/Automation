@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react'
-import IProduct from 'shared/interfaces/IPrroduct'
+import { IProduct } from 'shared'
 // import IProduct from '@shared/interfaces/IPoduct.ts'
 
 function App(): JSX.Element {

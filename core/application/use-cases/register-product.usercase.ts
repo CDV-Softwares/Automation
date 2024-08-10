@@ -1,6 +1,6 @@
-import IProduct from '../../../shared/interfaces/IPrroduct';
-import IUsercase from '../../../shared/interfaces/IUsercase';
-import { ProductRepository } from '../../domain/repositories/product.repository';
+import IProduct from '../../../shared/interfaces/IProduct';
+import IUsercase from '../../../shared/interfaces/IUsecase';
+import { ProductRepository } from '../../../shared/interfaces/product.repository';
 
 export namespace RegisterProductUsercase {
   export type Input = IProduct;

@@ -1,4 +1,4 @@
-import IProduct from '../../../shared/interfaces/IPrroduct';
+import IProduct from './IProduct';
 
 export namespace ProductRepository {
   export type RegisterResult = {

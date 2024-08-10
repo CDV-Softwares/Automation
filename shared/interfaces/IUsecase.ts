@@ -1,3 +1,3 @@
-export default interface IUsercase<Input, Output> {
+export default interface IUsecase<Input, Output> {
   execute(input: Input): Promise<Output> | Output;
 }

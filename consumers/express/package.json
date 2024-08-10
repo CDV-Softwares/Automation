@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/express": "^4.17.21",
+    "application": "file:../../core/application",
     "automation-backend": "file:",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

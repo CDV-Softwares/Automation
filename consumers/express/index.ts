@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 3000;
+import { RegisterProductUsercase } from 'application';
 import { Request, Response } from 'express';
 import puppeteer, { Browser } from 'puppeteer';
 
