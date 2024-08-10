@@ -1,4 +1,4 @@
 import { ProductInputMapper } from './dtos/product-input';
-import { RegisterProductUsercase } from './use-cases/register-product.usercase';
+import { RegisterProductUsecase } from './use-cases/register-product.usecase';
 
-export { RegisterProductUsercase, ProductInputMapper };
+export { RegisterProductUsecase, ProductInputMapper };

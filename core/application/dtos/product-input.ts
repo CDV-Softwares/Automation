@@ -1,6 +1,5 @@
-import IProduct from '../../../shared/interfaces/IProduct';
-import { IProductInput } from '../../../shared/interfaces/IProductInput';
-import { Product } from '../../domain';
+import { IProduct, IProductInput } from '../../../shared/index';
+import { Product } from '../../domain/index';
 
 class ProductInput extends Product implements IProductInput {
   public title: string;

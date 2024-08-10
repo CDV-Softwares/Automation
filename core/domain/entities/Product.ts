@@ -1,4 +1,4 @@
-import IProduct from '../../../shared/interfaces/IProduct';
+import { IProduct } from '../../../shared/index';
 
 export default class Product implements IProduct {
   constructor(

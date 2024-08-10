@@ -1,9 +1,9 @@
-import { IProductInput } from './IProductInput';
+import IProductInput from './IProductInput';
 
-export namespace ProductRepository {
+export namespace IProductRepository {
   export type RegisterResult = {
     message: string;
-    status: boolean;
+    status: number;
   };
 
   export interface Repository {
