@@ -13,14 +13,13 @@ function App(): JSX.Element {
     brand: '',
     model: '',
     year: '',
-    code: ''
+    code: '',
+    price: ''
   })
 
   const onSubmit = async (e): Promise<void> => {
     e.preventDefault()
     try {
-      console.log(import.meta.env.VITE_SERVER_URL)
-
       setFormState({ error: '', loading: true })
       const res = await fetch(import.meta.env.VITE_SERVER_URL + '/product/register', {
         method: 'POST',
@@ -43,17 +42,27 @@ function App(): JSX.Element {
     setFormInputs((p) => ({ ...p, [name]: value }))
   }
 
+  const totalLengh =
+    `${formInputs.name} ${formInputs.model} ${formInputs.brand} ${formInputs.year} ${formInputs.code}`
+      .length
+
   return (
     <main>
       <h1 className="ts">Automation</h1>
       <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <input onChange={onInputChange} type="text" name="id" placeholder="id" />
+        <input onChange={onInputChange} type="text" name="id" placeholder="ex 1234" />
         <input onChange={onInputChange} type="text" name="name" placeholder="name" />
         <input onChange={onInputChange} type="text" name="brand" placeholder="brand" />
         <input onChange={onInputChange} type="text" name="model" placeholder="model" />
         <input onChange={onInputChange} type="text" name="year" placeholder="year" />
-        <input onChange={onInputChange} type="text" name="code" placeholder="barcode" />
-        <button className="ts" style={{ padding: '.5rem' }} disabled={formState.loading}>
+        <input onChange={onInputChange} type="text" name="code" placeholder="ex 123938949233" />
+        <input onChange={onInputChange} type="text" name="price" placeholder="price" />
+        <small className="ts">current title length: {totalLengh}</small>
+        <button
+          className="ts"
+          style={{ padding: '.5rem' }}
+          disabled={formState.loading || totalLengh > 60}
+        >
           {formState.loading ? 'Loading' : 'Start'}
         </button>
       </form>

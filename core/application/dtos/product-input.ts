@@ -10,7 +10,8 @@ class ProductInput extends Product implements IProductInput {
       props.brand,
       props.model,
       props.year,
-      props.code
+      props.code,
+      props.price
     );
     this.title = `${this.name} ${this.brand} ${this.model} ${this.year} ${this.code}`;
   }

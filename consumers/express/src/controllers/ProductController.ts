@@ -10,8 +10,8 @@ export default class ProductController implements IProductController {
     res: Response
   ): Promise<Response<IProductService.RegisterResult>> {
     try {
-      const { id, name, brand, model, year, code } = req.body;
-      await this.registerProductUsecase.execute(
+      const { id, name, brand, model, year, code, price } = req.body;
+      const response = await this.registerProductUsecase.execute(
         ProductInputMapper.toOutput({
           id,
           name,
@@ -19,10 +19,11 @@ export default class ProductController implements IProductController {
           model,
           year,
           code,
+          price,
         })
       );
 
-      return res.json({ message: 'Done.' }).status(200);
+      return res.json({ message: response.message }).status(response.status);
     } catch (error) {
       console.log(error);
       return res.json({ message: 'Serverside err' }).status(500);

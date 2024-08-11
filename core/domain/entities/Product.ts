@@ -7,6 +7,7 @@ export default class Product implements IProduct {
     public brand: string,
     public model: string,
     public year: string,
-    public code: string
+    public code: string,
+    public price: string
   ) {}
 }

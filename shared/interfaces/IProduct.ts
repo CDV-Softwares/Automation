@@ -5,4 +5,5 @@ export default interface IProduct {
   model: string;
   year: string;
   code: string;
+  price: string;
 }
