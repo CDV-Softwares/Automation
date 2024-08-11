@@ -9,8 +9,20 @@ export default class ProductRoutes implements IRouter {
 
   initializeRoutes() {
     this.router.post(
-      '/register',
-      async (req, res) => await this.controller.register(req, res)
+      '/first-step',
+      async (req, res) => await this.controller.firstStep(req, res)
+    );
+    this.router.post(
+      '/second-step',
+      async (req, res) => await this.controller.secondStep(req, res)
+    );
+    this.router.post(
+      '/third-step',
+      async (req, res) => await this.controller.thirdStep(req, res)
+    );
+    this.router.post(
+      '/fourth-step',
+      async (req, res) => await this.controller.fourthStep(req, res)
     );
   }
 

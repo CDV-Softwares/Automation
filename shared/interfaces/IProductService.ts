@@ -12,7 +12,10 @@ export namespace IProductService {
     password: string;
     openBrowser(): Promise<void>;
     accessWebsiteInANewTabAndLogin(): Promise<void>;
-    startRegistering(product: IProductInput): Promise<RegisterResult>;
+    firstStep(product: IProductInput): Promise<RegisterResult>;
+    secondStep(product: IProductInput): Promise<RegisterResult>;
+    thirdStep(product: IProductInput): Promise<RegisterResult>;
+    fourthStep(product: IProductInput): Promise<RegisterResult>;
     closeBrowser(): Promise<void>;
   }
 }

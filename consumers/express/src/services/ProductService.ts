@@ -11,17 +11,45 @@ export class ProductService implements IProductService.Service {
     public login: string,
     public password: string
   ) {}
-
-  async startRegistering(
+  async firstStep(
     product: IProductInput
   ): Promise<IProductService.RegisterResult> {
-    // await this.registeringFirstStep(product);
-    await this.registeringSecondStep();
-    await this.registeringThirdStep(product);
-    await this.registeringFourthStep(product);
-    console.log('ok');
-
-    return { message: 'Done', status: 200 };
+    try {
+      await this.registeringFirstStep(product);
+      return { message: 'ok', status: 200 };
+    } catch (error) {
+      return { message: 'ok', status: 500 };
+    }
+  }
+  async secondStep(
+    product: IProductInput
+  ): Promise<IProductService.RegisterResult> {
+    try {
+      await this.registeringSecondStep(product);
+      return { message: 'ok', status: 200 };
+    } catch (error) {
+      return { message: 'ok', status: 500 };
+    }
+  }
+  async thirdStep(
+    product: IProductInput
+  ): Promise<IProductService.RegisterResult> {
+    try {
+      await this.registeringThirdStep(product);
+      return { message: 'ok', status: 200 };
+    } catch (error) {
+      return { message: 'ok', status: 500 };
+    }
+  }
+  async fourthStep(
+    product: IProductInput
+  ): Promise<IProductService.RegisterResult> {
+    try {
+      await this.registeringFourthStep(product);
+      return { message: 'ok', status: 200 };
+    } catch (error) {
+      return { message: 'ok', status: 500 };
+    }
   }
 
   async openBrowser(): Promise<void> {
@@ -55,7 +83,8 @@ export class ProductService implements IProductService.Service {
     );
   }
 
-  async registeringSecondStep() {
+  async registeringSecondStep(product: IProductInput) {
+    const { code } = product;
     const announce = await this.waitForeverForElement('text/Anunciar');
     await announce?.click();
     await ProductService.page.waitForNetworkIdle();
@@ -77,11 +106,15 @@ export class ProductService implements IProductService.Service {
     await this.click('text/Avançar', 1, undefined, 777);
     await this.click('text/Avançar', 1, undefined, 777);
     await this.click('text/Avançar', 1, undefined, 777);
-  }
 
-  async registeringThirdStep(product: IProductInput) {
-    const { code } = product;
+    //ficha técnica
+
+    await this.waitForeverForElement(
+      'text/Preencha as informações de ficha técnica do seu produto:'
+    );
+
     await this.clickAndWrite('text/ Número de peça ', code);
+    await this.clickAndWrite('text/Número de peça *', code);
     await this.clickAndWrite('text/ Origem ', 'Brasil');
     await this.clickAndWrite('text/ Fonte do produto ', 'Original');
 
@@ -154,17 +187,20 @@ export class ProductService implements IProductService.Service {
     await this.clickTabSpace('text/ Homologação Anatel Nº ');
     await this.clickTabSpace('text/ Tipo de injeção ');
     await this.clickTabSpace('text/ Com tela digital ');
-
-    //enriquecer com mais preenchimentos automaticos aqui
-    // await this.waitForeverForElement('text/ Alterar Compatibilidade');
   }
 
-  async registeringFourthStep(product: IProductInput) {
+  async registeringThirdStep(product: IProductInput) {
     const { id, name, brand, model, year, code, title, price } = product;
-    // await this.click('text/ Alterar Compatibilidade ');
-    // await this.waitForeverForElement('text/ Veículos compatíveis ');
-    // await this.click('text/ Marca *');
+    await this.click('text/ Alterar Compatibilidade ');
+    await this.waitForeverForElement('text/Veículos compatíveis');
+    await this.wait(3000);
+    await this.press('Tab');
+    await this.press('Space');
+
+    console.log('teste');
   }
+
+  async registeringFourthStep(product: IProductInput) {}
 
   async waitForeverForElement(selector: string) {
     return await ProductService.page.waitForSelector(selector, { timeout: 0 });
@@ -255,14 +291,14 @@ export class ProductService implements IProductService.Service {
   }
 
   async clickAndWrite(
-    labelText: string,
+    selector: string,
     text: string,
     numberOfClicks: number = 1,
     offset: { x: number; y: number } | undefined = undefined
   ) {
-    if (!(await this.elementExists(labelText))) return;
-    const selected = ProductService.page.locator(labelText);
-    await selected.click({ count: numberOfClicks, offset });
+    if (!(await this.elementExists(selector))) return;
+    const selected = ProductService.page.locator(selector);
+    await selected.click({ count: numberOfClicks, offset: { x: 10, y: 0 } });
     await this.type(text);
   }
 
@@ -301,6 +337,12 @@ export class ProductService implements IProductService.Service {
 
   async press(text: KeyInput) {
     await ProductService.page.keyboard.press(text);
+  }
+
+  async wait(time: number) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, time);
+    });
   }
 
   async closeBrowser(): Promise<void> {

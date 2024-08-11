@@ -6,7 +6,12 @@ const port = process.env.PORT || 3000;
 import ProductRoutes from './src/routes/ProductRoutes';
 import ProductController from './src/controllers/ProductController';
 import { ProductService } from './src/services/ProductService';
-import { RegisterProductUsecase } from 'application';
+import {
+  FirstStepUsecase,
+  FourthStepUsecase,
+  SecondStepUsecase,
+  ThirdStepUsecase,
+} from 'application';
 const { PLATAFORM_USERNAME, PLATAFORM_PASSWORD, PLATAFORM_URL } = process.env;
 
 app.use(cors());
@@ -18,12 +23,16 @@ const productService = new ProductService(
   String(PLATAFORM_PASSWORD)
 );
 
+const productController = new ProductController(
+  new FirstStepUsecase.Usecase(productService),
+  new SecondStepUsecase.Usecase(productService),
+  new ThirdStepUsecase.Usecase(productService),
+  new FourthStepUsecase.Usecase(productService)
+);
+
 app.use(
-  '/product',
-  new ProductRoutes(
-    express.Router(),
-    new ProductController(new RegisterProductUsecase.Usecase(productService))
-  ).getRoutes()
+  '/api',
+  new ProductRoutes(express.Router(), productController).getRoutes()
 );
 
 app.listen(port, async () => {

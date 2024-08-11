@@ -17,11 +17,11 @@ function App(): JSX.Element {
     price: ''
   })
 
-  const onSubmit = async (e): Promise<void> => {
+  const onSubmit = async (e, endpoint: string): Promise<void> => {
     e.preventDefault()
     try {
       setFormState({ error: '', loading: true })
-      const res = await fetch(import.meta.env.VITE_SERVER_URL + '/product/register', {
+      const res = await fetch(import.meta.env.VITE_SERVER_URL + endpoint, {
         method: 'POST',
         body: JSON.stringify(formInputs),
         headers: {
@@ -65,7 +65,7 @@ function App(): JSX.Element {
           className="ts"
           style={{ padding: '.5rem' }}
           disabled={formState.loading || totalLengh > 60}
-          onClick={onSubmit}
+          onClick={(e) => onSubmit(e, '/api/first-step')}
         >
           {formState.loading ? 'Loading' : 'First Step'}
           {formState.error && formState.error}
@@ -75,7 +75,7 @@ function App(): JSX.Element {
           className="ts"
           style={{ padding: '.5rem' }}
           disabled={formState.loading || totalLengh > 60}
-          onClick={onSubmit}
+          onClick={(e) => onSubmit(e, '/api/second-step')}
         >
           {formState.loading ? 'Loading' : 'Second Step'}
           {formState.error && formState.error}
@@ -85,7 +85,7 @@ function App(): JSX.Element {
           className="ts"
           style={{ padding: '.5rem' }}
           disabled={formState.loading || totalLengh > 60}
-          onClick={onSubmit}
+          onClick={(e) => onSubmit(e, '/api/third-step')}
         >
           {formState.loading ? 'Loading' : 'Third Step'}
           {formState.error && formState.error}
@@ -95,7 +95,7 @@ function App(): JSX.Element {
           className="ts"
           style={{ padding: '.5rem' }}
           disabled={formState.loading || totalLengh > 60}
-          onClick={onSubmit}
+          onClick={(e) => onSubmit(e, '/api/fourth-step')}
         >
           {formState.loading ? 'Loading' : 'Fourth Step'}
           {formState.error && formState.error}
