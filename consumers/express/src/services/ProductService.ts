@@ -63,20 +63,20 @@ export class ProductService implements IProductService.Service {
       '#userAccounts mat-select'
     );
     await elementHandle?.click();
-    await this.click('text/DoisS');
-    await this.click('text/Frango Car Autopeças');
+    await this.click('text/ DoisS', 1, undefined, 777);
+    await this.click('text/ Frango Car Autopeças', 1, undefined, 777);
     await this.click(
-      'text/Selecione as contas em que deseja publicar o anúncio:'
+      'text/Selecione as contas em que deseja publicar o anúncio:',
+      1,
+      undefined,
+      777
     );
-    await this.click('text/Avançar');
-    await this.click('text/Avançar');
-    await this.click('text/navigate_next');
-    // await this.press('Tab');
-    // await this.press('Tab');
-    // await this.press('Space');
-    await this.click('text/Avançar');
-    await this.click('text/Avançar');
-    await this.click('text/Avançar');
+    await this.click('text/Avançar', 1, undefined, 777);
+    await this.click('text/Avançar', 1, undefined, 777);
+    await this.click('text/navigate_next', 1, undefined, 777);
+    await this.click('text/Avançar', 1, undefined, 777);
+    await this.click('text/Avançar', 1, undefined, 777);
+    await this.click('text/Avançar', 1, undefined, 777);
   }
 
   async registeringThirdStep(product: IProductInput) {
@@ -89,6 +89,23 @@ export class ProductService implements IProductService.Service {
     await this.click('text/ Carro/Caminhonete ');
 
     await this.clickYes('text/ Requer programação ');
+    await this.clickTab('text/ Com Bluetooth ');
+    await this.clickTab("text/ É à prova d'água ");
+    await this.clickTab('text/ Com lampadas LED para visão noturna ');
+    await this.clickTab('text/ Com aplicativo móvel ');
+    await this.clickTab('text/ Com Wi-Fi ');
+    await this.clickTab('text/ Com direção assistida ');
+    await this.clickTab('text/ Inclui fios ');
+    await this.clickTab('text/ Com microfone ');
+    await this.clickTab('text/ Com sensor de movimento ');
+    await this.clickTab('text/ Com gravação em loop ');
+    await this.clickTab('text/ Inclui ecrã ');
+    await this.clickTab('text/ É compatível com armazenamento SD ');
+    await this.clickTab('text/ Inclui junta ');
+    await this.clickTab('text/ Inclui sensor de posição ');
+    await this.clickTab('text/ Inclui atuador de marcha lenta ');
+    await this.clickTab('text/ Inclui parafusos de montagem ');
+    await this.clickTab('text/ Com buzzer ');
 
     await this.clickSpace('text/ Grampos incluídos ');
 
@@ -99,53 +116,112 @@ export class ProductService implements IProductService.Service {
       '1'
     );
 
-    await this.writeClickTabSpaceSpace(
+    await this.clickWriteTabSpaceSpace(
       'text/ Comprimento do módulo de controle do motor ',
       '1'
     );
-    await this.writeClickTabSpaceSpace(
+    await this.clickWriteTabSpaceSpace(
       'text/ Anchura do módulo de controle do motor ',
       '1'
     );
+    await this.clickWriteTabSpaceSpace(
+      'text/ Capacidade de armazenamento ',
+      '1'
+    );
+    await this.clickWriteTabSpaceSpace('text/ Ângulo de visão ', '1');
 
+    await this.clickWriteTabSpaceSpace('text/ Resolução de vídeo ', '1');
+    await this.clickWriteTabSpaceDownSpace('text/ Tamanho da tela ', '1');
+    await this.clickWriteTabSpaceDownSpace(
+      'text/ Diâmetro interno da mangueira de admissão ',
+      '1'
+    );
+
+    await this.clickTabTabSpace('text/ Voltagem ');
+    await this.clickTabTabSpace('text/ Material da mangueira de admissão ');
+    await this.clickTabTabSpace(
+      'text/ Diâmetro externo da mangueira de admissão '
+    );
+
+    await this.clickTabSpace('text/ Linha ');
     await this.clickTabSpace('text/ Material da mangueira de intercooler ');
     await this.clickTabSpace('text/ Pressão de trabalho máxima ');
     await this.clickTabSpace('text/ Número de registro/certificação ');
     await this.clickTabSpace('text/ Código OEM ');
+    await this.clickTabSpace('text/ Código universal de produto ');
+    await this.clickTabSpace('text/ Fabricante ');
+    await this.clickTabSpace('text/ Modelo alfanumérico ');
+    await this.clickTabSpace('text/ Homologação Anatel Nº ');
+    await this.clickTabSpace('text/ Tipo de injeção ');
+    await this.clickTabSpace('text/ Com tela digital ');
 
     //enriquecer com mais preenchimentos automaticos aqui
-    await this.waitForeverForElement('text/ Alterar Compatibilidade ');
+    // await this.waitForeverForElement('text/ Alterar Compatibilidade');
   }
 
   async registeringFourthStep(product: IProductInput) {
     const { id, name, brand, model, year, code, title, price } = product;
-    await this.click('text/ Alterar Compatibilidade');
-    await this.waitForeverForElement('text/ Veículos compatíveis');
-    await this.click('text/ Marca *');
+    // await this.click('text/ Alterar Compatibilidade ');
+    // await this.waitForeverForElement('text/ Veículos compatíveis ');
+    // await this.click('text/ Marca *');
   }
 
   async waitForeverForElement(selector: string) {
     return await ProductService.page.waitForSelector(selector, { timeout: 0 });
   }
 
-  async click(
-    selector: string,
-    numberOfClicks: number = 1,
-    offset: { x: number; y: number } | undefined = undefined
-  ) {
-    if (!(await this.elementExists(selector))) return;
-    const selected = ProductService.page.locator(selector);
-    await selected.click({ count: numberOfClicks, offset, delay: 250 });
-  }
-
   async clickYes(selector: string) {
+    if (!(await this.elementExists(selector))) return;
     await this.click(selector);
     await this.click('text/ Sim ');
   }
 
   async clickNo(selector: string) {
+    if (!(await this.elementExists(selector))) return;
     await this.click(selector);
-    await this.click('text/ Não');
+    await this.click('text/ Não ');
+  }
+
+  async clickTab(selector: string) {
+    if (!(await this.elementExists(selector))) return;
+    await this.click(selector);
+    await this.press('Tab');
+  }
+
+  async clickWriteTabSpaceDownSpace(selector: string, text: string) {
+    if (!(await this.elementExists(selector))) return;
+    await this.clickAndWrite(selector, text);
+    await this.press('Tab');
+    await this.press('Space');
+    await this.press('ArrowDown');
+    await this.press('Space');
+  }
+
+  async clickWriteTabSpaceDownDownSpace(selector: string, text: string) {
+    if (!(await this.elementExists(selector))) return;
+    await this.clickAndWrite(selector, text);
+    await this.press('Tab');
+    await this.press('Space');
+    await this.press('ArrowDown');
+    await this.press('ArrowDown');
+    await this.press('Space');
+  }
+
+  async clickWriteTabSpaceSpace(selector: string, text: string) {
+    if (!(await this.elementExists(selector))) return;
+    await this.clickAndWrite(selector, text, 1, { x: 0, y: 0 });
+    await this.clickTabSpaceSpace(selector);
+  }
+
+  async click(
+    selector: string,
+    numberOfClicks: number = 1,
+    offset: { x: number; y: number } | undefined = undefined,
+    delay: number = 250
+  ) {
+    if (!(await this.elementExists(selector, delay))) return;
+    const selected = ProductService.page.locator(selector);
+    await selected.click({ count: numberOfClicks, offset, delay: 10 });
   }
 
   async clickSpace(
@@ -155,19 +231,14 @@ export class ProductService implements IProductService.Service {
   ) {
     if (!(await this.elementExists(selector))) return;
     const selected = ProductService.page.locator(selector);
-    await selected.click({ count: numberOfClicks, offset, delay: 250 });
+    await selected.click({ count: numberOfClicks, offset, delay: 10 });
     await this.press('Space');
   }
 
-  async writeClickTabSpaceSpace(selector: string, text: string) {
-    if (!(await this.elementExists(selector))) return;
-    await this.clickAndWrite(selector, text, 1, { x: 0, y: 0 });
-    await this.clickTabSpaceSpace(selector);
-  }
-
-  async elementExists(selector: string): Promise<boolean> {
+  async elementExists(selector: string, delay: number = 200): Promise<boolean> {
     try {
-      await ProductService.page.waitForSelector(selector, { timeout: 777 });
+      // 777
+      await ProductService.page.waitForSelector(selector, { timeout: delay });
       return true;
     } catch (error) {
       console.log('404 selector: ' + selector);
@@ -217,10 +288,10 @@ export class ProductService implements IProductService.Service {
   }
 
   async clickTabTabSpace(selector: string) {
-    if (!(await this.elementExists(selector))) return;
+    if (!(await this.elementExists(selector, 777))) return;
     await this.click(selector);
     await this.press('Tab');
-    await this.press('Space');
+    await this.press('Tab');
     await this.press('Space');
   }
 

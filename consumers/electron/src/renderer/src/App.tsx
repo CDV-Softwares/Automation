@@ -49,7 +49,10 @@ function App(): JSX.Element {
   return (
     <main>
       <h1 className="ts">Automation</h1>
-      <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+      >
         <input onChange={onInputChange} type="text" name="id" placeholder="ex 1234" />
         <input onChange={onInputChange} type="text" name="name" placeholder="name" />
         <input onChange={onInputChange} type="text" name="brand" placeholder="brand" />
@@ -62,8 +65,40 @@ function App(): JSX.Element {
           className="ts"
           style={{ padding: '.5rem' }}
           disabled={formState.loading || totalLengh > 60}
+          onClick={onSubmit}
         >
-          {formState.loading ? 'Loading' : 'Start'}
+          {formState.loading ? 'Loading' : 'First Step'}
+          {formState.error && formState.error}
+        </button>
+
+        <button
+          className="ts"
+          style={{ padding: '.5rem' }}
+          disabled={formState.loading || totalLengh > 60}
+          onClick={onSubmit}
+        >
+          {formState.loading ? 'Loading' : 'Second Step'}
+          {formState.error && formState.error}
+        </button>
+
+        <button
+          className="ts"
+          style={{ padding: '.5rem' }}
+          disabled={formState.loading || totalLengh > 60}
+          onClick={onSubmit}
+        >
+          {formState.loading ? 'Loading' : 'Third Step'}
+          {formState.error && formState.error}
+        </button>
+
+        <button
+          className="ts"
+          style={{ padding: '.5rem' }}
+          disabled={formState.loading || totalLengh > 60}
+          onClick={onSubmit}
+        >
+          {formState.loading ? 'Loading' : 'Fourth Step'}
+          {formState.error && formState.error}
         </button>
       </form>
       <footer>
