@@ -1,4 +1,10 @@
-import { Browser, KeyInput, Page, PuppeteerNode } from 'puppeteer';
+import {
+  Browser,
+  KeyInput,
+  Page,
+  PuppeteerNode,
+  QueryOptions,
+} from 'puppeteer';
 import { IProductInput, IProductService } from 'shared';
 import puppeteer from 'puppeteer';
 
@@ -18,7 +24,7 @@ export class ProductService implements IProductService.Service {
       await this.registeringFirstStep(product);
       return { message: 'ok', status: 200 };
     } catch (error) {
-      return { message: 'ok', status: 500 };
+      return { message: 'fail', status: 500 };
     }
   }
   async secondStep(
@@ -28,7 +34,7 @@ export class ProductService implements IProductService.Service {
       await this.registeringSecondStep(product);
       return { message: 'ok', status: 200 };
     } catch (error) {
-      return { message: 'ok', status: 500 };
+      return { message: 'fail', status: 500 };
     }
   }
   async thirdStep(
@@ -38,7 +44,7 @@ export class ProductService implements IProductService.Service {
       await this.registeringThirdStep(product);
       return { message: 'ok', status: 200 };
     } catch (error) {
-      return { message: 'ok', status: 500 };
+      return { message: 'fail', status: 500 };
     }
   }
   async fourthStep(
@@ -48,7 +54,7 @@ export class ProductService implements IProductService.Service {
       await this.registeringFourthStep(product);
       return { message: 'ok', status: 200 };
     } catch (error) {
-      return { message: 'ok', status: 500 };
+      return { message: 'fail', status: 500 };
     }
   }
 
@@ -112,6 +118,8 @@ export class ProductService implements IProductService.Service {
     await this.waitForeverForElement(
       'text/Preencha as informações de ficha técnica do seu produto:'
     );
+
+    await this.wait(500);
 
     await this.clickAndWrite('text/ Número de peça ', code);
     await this.clickAndWrite('text/Número de peça *', code);
@@ -192,15 +200,96 @@ export class ProductService implements IProductService.Service {
   async registeringThirdStep(product: IProductInput) {
     const { id, name, brand, model, year, code, title, price } = product;
     await this.click('text/ Alterar Compatibilidade ');
-    await this.waitForeverForElement('text/Veículos compatíveis');
-    await this.wait(3000);
+    const thirdStepTitle = await this.waitForeverForElement(
+      'text/Veículos compatíveis'
+    );
+    const replace = (str: string) => str.toLowerCase().trim();
+
+    const chooseCompatibilitie = async (
+      className: string,
+      searchBy: string
+    ) => {
+      const a = ProductService.page.$$(className);
+      for (const el of await a) {
+        const text = await el.evaluate((e) => e.textContent);
+        if (!text) break;
+        if (replace(text) == replace(searchBy)) await el.click();
+      }
+    };
+
+    await this.wait(500);
     await this.press('Tab');
     await this.press('Space');
+    await this.wait(300);
 
-    console.log('teste');
+    await chooseCompatibilitie('.mat-option-text', brand);
+    await thirdStepTitle?.click();
+    await thirdStepTitle?.click();
+
+    await this.wait(500);
+    await this.press('Tab');
+    await this.press('Tab');
+    await this.press('Tab');
+    await this.press('Space');
+    await this.wait(300);
+
+    await chooseCompatibilitie('.mat-option-text', model);
+    await thirdStepTitle?.click();
+    await thirdStepTitle?.click();
+
+    await this.wait(500);
+    await this.press('Tab');
+    await this.press('Tab');
+    await this.press('Tab');
+    await this.press('Space');
+    await this.wait(300);
+
+    await chooseCompatibilitie('.mat-option-text', year);
+    await thirdStepTitle?.click();
+    await thirdStepTitle?.click();
+
+    await this.wait(500);
+    await this.press('Tab');
+    await this.press('Tab');
+    await this.press('Tab');
+    await this.press('Space');
+    await this.wait(300);
+
+    // await chooseCompatibilitie('.mat-option-text', year);
+    await this.click('text/ Selecionar Todos ');
+    await thirdStepTitle?.click();
+    await thirdStepTitle?.click();
+
+    await this.wait(500);
+    await this.press('Tab');
+    await this.press('Tab');
+    await this.press('Tab');
+    await this.press('Space');
+    await this.wait(300);
+
+    await this.click('text/ Selecionar ');
+    await this.click('text/ Avançar ');
   }
 
-  async registeringFourthStep(product: IProductInput) {}
+  async registeringFourthStep(product: IProductInput) {
+    const { id, name, brand, model, year, code, title, price } = product;
+    await ProductService.page.keyboard.down('ControlLeft');
+    await this.press('Home');
+    await ProductService.page.keyboard.up('ControlLeft');
+    await this.press('ArrowDown');
+    await this.press('ArrowDown');
+    await this.press('End');
+    await this.type(brand);
+    await this.press('ArrowDown');
+    await this.press('End');
+    await this.type(model);
+    await this.press('ArrowDown');
+    await this.press('End');
+    await this.type(year);
+    await this.press('ArrowDown');
+    await this.press('End');
+    await this.type(code);
+  }
 
   async waitForeverForElement(selector: string) {
     return await ProductService.page.waitForSelector(selector, { timeout: 0 });
