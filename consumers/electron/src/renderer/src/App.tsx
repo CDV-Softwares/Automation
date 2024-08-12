@@ -1,13 +1,11 @@
 import { ChangeEvent, useState } from 'react'
 import { IProduct } from 'shared'
+import Button from './components/form/Button'
+import Input from './components/form/Input'
 // import IProduct from '@shared/interfaces/IPoduct.ts'
 
 function App(): JSX.Element {
-  const [formState, setFormState] = useState<{ loading: boolean; error: string }>({
-    loading: false,
-    error: ''
-  })
-  const [formInputs, setFormInputs] = useState<IProduct>({
+  const formInputsInitialValue = {
     id: '',
     name: '',
     brand: '',
@@ -15,9 +13,17 @@ function App(): JSX.Element {
     year: '',
     code: '',
     price: ''
+  }
+  const [formState, setFormState] = useState<{ loading: boolean; error: string }>({
+    loading: false,
+    error: ''
   })
+  const [formInputs, setFormInputs] = useState<IProduct>(formInputsInitialValue)
 
-  const onSubmit = async (e, endpoint: string): Promise<void> => {
+  const onSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    endpoint: string
+  ): Promise<void> => {
     e.preventDefault()
     try {
       setFormState({ error: '', loading: true })
@@ -42,62 +48,97 @@ function App(): JSX.Element {
     setFormInputs((p) => ({ ...p, [name]: value }))
   }
 
-  const totalLengh =
+  const clearInputs = (): void => {
+    setFormInputs(formInputsInitialValue)
+  }
+
+  const totalLength =
     `${formInputs.name} ${formInputs.model} ${formInputs.brand} ${formInputs.year} ${formInputs.code}`
       .length
 
   return (
     <main>
       <h1 className="ts">Automation</h1>
-      <form
-        onSubmit={(e) => e.preventDefault()}
-        style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
-      >
-        <input onChange={onInputChange} type="text" name="id" placeholder="ex 1234" />
-        <input onChange={onInputChange} type="text" name="name" placeholder="name" />
-        <input onChange={onInputChange} type="text" name="brand" placeholder="brand" />
-        <input onChange={onInputChange} type="text" name="model" placeholder="model" />
-        <input onChange={onInputChange} type="text" name="year" placeholder="year" />
-        <input onChange={onInputChange} type="text" name="code" placeholder="ex 123938949233" />
-        <input onChange={onInputChange} type="text" name="price" placeholder="price" />
-        <small className="ts">current title length: {totalLengh}</small>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <Input
+          field="id"
+          formInputs={formInputs}
+          onInputChange={onInputChange}
+          placeholder="ex 1234"
+        />
+        <Input
+          field="name"
+          formInputs={formInputs}
+          onInputChange={onInputChange}
+          placeholder="name"
+        />
+        <Input
+          field="brand"
+          formInputs={formInputs}
+          onInputChange={onInputChange}
+          placeholder="brand"
+        />
+        <Input
+          field="model"
+          formInputs={formInputs}
+          onInputChange={onInputChange}
+          placeholder="model"
+        />
+        <Input
+          field="year"
+          formInputs={formInputs}
+          onInputChange={onInputChange}
+          placeholder="year"
+        />
+        <Input
+          field="code"
+          formInputs={formInputs}
+          onInputChange={onInputChange}
+          placeholder="ex 123938949233"
+        />
+        <Input
+          field="price"
+          formInputs={formInputs}
+          onInputChange={onInputChange}
+          placeholder="price"
+        />
+
+        <small className="ts">current title length: {totalLength}</small>
         {formState.error.length > 0 && <small className="err">{formState.error}</small>}
-        <button
-          className="ts"
-          style={{ padding: '.5rem' }}
-          disabled={formState.loading || totalLengh > 60}
-          onClick={(e) => onSubmit(e, '/api/first-step')}
+        <Button
+          formState={formState}
+          onSubmit={onSubmit}
+          totalLength={totalLength}
+          endpoint="/api/first-step"
         >
-          {formState.loading ? 'Loading' : 'First Step'}
-        </button>
-
-        <button
-          className="ts"
-          style={{ padding: '.5rem' }}
-          disabled={formState.loading || totalLengh > 60}
-          onClick={(e) => onSubmit(e, '/api/second-step')}
+          First Step
+        </Button>
+        <Button
+          formState={formState}
+          onSubmit={onSubmit}
+          totalLength={totalLength}
+          endpoint="/api/second-step"
         >
-          {formState.loading ? 'Loading' : 'Second Step'}
-        </button>
-
-        <button
-          className="ts"
-          style={{ padding: '.5rem' }}
-          disabled={formState.loading || totalLengh > 60}
-          onClick={(e) => onSubmit(e, '/api/third-step')}
+          Second Step
+        </Button>
+        <Button
+          formState={formState}
+          onSubmit={onSubmit}
+          totalLength={totalLength}
+          endpoint="/api/third-step"
         >
-          {formState.loading ? 'Loading' : 'Third Step'}
-        </button>
-
-        <button
-          className="ts"
-          style={{ padding: '.5rem' }}
-          disabled={formState.loading || totalLengh > 60}
-          onClick={(e) => onSubmit(e, '/api/fourth-step')}
+          Third Step
+        </Button>
+        <Button
+          formState={formState}
+          onSubmit={onSubmit}
+          totalLength={totalLength}
+          endpoint="/api/fourth-step"
         >
-          {formState.loading ? 'Loading' : 'Fourth Step'}
-        </button>
-      </form>
+          Fourth Step
+        </Button>
+        <button onClick={clearInputs}>limpar inputs</button>
+      </div>
       <footer>
         <small>by @vitosdeveloper</small>
       </footer>
