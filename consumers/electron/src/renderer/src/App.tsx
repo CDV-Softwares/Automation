@@ -29,7 +29,7 @@ function App(): JSX.Element {
         }
       })
       const json = await res.json()
-      console.log(json)
+      if (!res.ok) throw new Error(json.message)
     } catch (err) {
       setFormState((p) => ({ ...p, error: err instanceof Error ? err.message : 'Error on submit' }))
     } finally {
@@ -61,6 +61,7 @@ function App(): JSX.Element {
         <input onChange={onInputChange} type="text" name="code" placeholder="ex 123938949233" />
         <input onChange={onInputChange} type="text" name="price" placeholder="price" />
         <small className="ts">current title length: {totalLengh}</small>
+        {formState.error.length > 0 && <small className="err">{formState.error}</small>}
         <button
           className="ts"
           style={{ padding: '.5rem' }}
@@ -68,7 +69,6 @@ function App(): JSX.Element {
           onClick={(e) => onSubmit(e, '/api/first-step')}
         >
           {formState.loading ? 'Loading' : 'First Step'}
-          {formState.error && formState.error}
         </button>
 
         <button
@@ -78,7 +78,6 @@ function App(): JSX.Element {
           onClick={(e) => onSubmit(e, '/api/second-step')}
         >
           {formState.loading ? 'Loading' : 'Second Step'}
-          {formState.error && formState.error}
         </button>
 
         <button
@@ -88,7 +87,6 @@ function App(): JSX.Element {
           onClick={(e) => onSubmit(e, '/api/third-step')}
         >
           {formState.loading ? 'Loading' : 'Third Step'}
-          {formState.error && formState.error}
         </button>
 
         <button
@@ -98,7 +96,6 @@ function App(): JSX.Element {
           onClick={(e) => onSubmit(e, '/api/fourth-step')}
         >
           {formState.loading ? 'Loading' : 'Fourth Step'}
-          {formState.error && formState.error}
         </button>
       </form>
       <footer>

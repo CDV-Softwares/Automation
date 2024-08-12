@@ -88,6 +88,14 @@ code {
   font-weight: 700;
 }
 
+.err {
+  background: -webkit-linear-gradient(315deg, #e04b4b 45%, #f04e4e);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
 .actions {
   display: flex;
   padding-top: 32px;

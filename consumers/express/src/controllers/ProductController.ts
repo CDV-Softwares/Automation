@@ -16,6 +16,7 @@ export default class ProductController implements IProductController {
     private thirdStepUseCase: ThirdStepUsecase.Usecase,
     private fourthStepUseCase: FourthStepUsecase.Usecase
   ) {}
+
   async firstStep(
     req: Request,
     res: Response
@@ -36,7 +37,9 @@ export default class ProductController implements IProductController {
       return res.json({ message: response.message }).status(response.status);
     } catch (error) {
       console.log(error);
-      return res.json({ message: 'Serverside err' }).status(500);
+      return res.status(500).json({
+        message: error instanceof Error ? error.message : 'Serverside err',
+      });
     }
   }
 
@@ -60,7 +63,11 @@ export default class ProductController implements IProductController {
       return res.json({ message: response.message }).status(response.status);
     } catch (error) {
       console.log(error);
-      return res.json({ message: 'Serverside err' }).status(500);
+      return res
+        .json({
+          message: error instanceof Error ? error.message : 'Serverside err',
+        })
+        .status(500);
     }
   }
 
@@ -84,7 +91,11 @@ export default class ProductController implements IProductController {
       return res.json({ message: response.message }).status(response.status);
     } catch (error) {
       console.log(error);
-      return res.json({ message: 'Serverside err' }).status(500);
+      return res
+        .json({
+          message: error instanceof Error ? error.message : 'Serverside err',
+        })
+        .status(500);
     }
   }
   async fourthStep(
@@ -107,7 +118,11 @@ export default class ProductController implements IProductController {
       return res.json({ message: response.message }).status(response.status);
     } catch (error) {
       console.log(error);
-      return res.json({ message: 'Serverside err' }).status(500);
+      return res
+        .json({
+          message: error instanceof Error ? error.message : 'Serverside err',
+        })
+        .status(500);
     }
   }
 }
