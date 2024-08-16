@@ -61,13 +61,18 @@ export class ProductService implements IProductService.Service {
   async openBrowser(): Promise<void> {
     ProductService.browser = await ProductService.puppeteer.launch({
       headless: false,
+      defaultViewport: {
+        width: 1000,
+        height: 700,
+      },
     });
   }
 
   async accessWebsiteInANewTabAndLogin(): Promise<void> {
     ProductService.page = await ProductService.browser.newPage();
+
     await ProductService.page.goto(this.url);
-    await ProductService.page.setViewport({ width: 1080, height: 1024 });
+    // await ProductService.page.setViewport({ width: 1080, height: 1024 });
     await ProductService.page.locator('[type="email"]').fill(this.login);
     await ProductService.page.locator('[type="password"]').fill(this.password);
     await ProductService.page.locator('[type="submit"]').click();
@@ -85,7 +90,7 @@ export class ProductService implements IProductService.Service {
     await this.click('text/ Selecionar Fotos');
     await this.waitForeverForElement('.piece-delete-image');
     await this.click(
-      '.mat-icon.notranslate.mat-suffix-icon.material-icons.mat-ligature-font.mat-icon-no-color.ng-tns-c2794762957-7'
+      '.mat-icon.notranslate.mat-suffix-icon.material-icons.mat-ligature-font.mat-icon-no-color.ng-tns-c2794762957-9'
     );
   }
 
@@ -151,11 +156,17 @@ export class ProductService implements IProductService.Service {
     await this.clickSpace('text/ Grampos incluídos ');
 
     await this.clickWriteTabSpaceCm('text/ Comprimento ', '1');
+    await this.clickWriteTabSpaceCm('text/ Altura ', '1');
+    await this.clickWriteTabSpaceCm('text/ Diâmetro ', '1');
+    await this.clickWriteTabSpaceCm('text/ Diâmetro do corpo ', '1');
+    await this.clickWriteTabSpaceCm('text/ Diâmetro do eixo ', '1');
+    await this.clickWriteTabSpaceCm('text/ Largura ', '1');
     await this.clickWriteTabSpaceCm('text/ Diâmetro externo ', '1');
     await this.clickWriteTabSpaceCm(
       'text/ Diâmetro interno das pontas da mangueira de intercooler ',
       '1'
     );
+    await this.clickWriteTabSpaceCm('text/ Distância entre injetores ', '1');
 
     await this.clickWriteTabSpaceSpace(
       'text/ Comprimento do módulo de controle do motor ',
@@ -170,6 +181,7 @@ export class ProductService implements IProductService.Service {
       '1'
     );
     await this.clickWriteTabSpaceSpace('text/ Ângulo de visão ', '1');
+    await this.clickWriteTabSpaceSpace('text/ Peso ', '1');
 
     await this.clickWriteTabSpaceSpace('text/ Resolução de vídeo ', '1');
     await this.clickWriteTabSpaceDownSpace('text/ Tamanho da tela ', '1');
@@ -183,6 +195,7 @@ export class ProductService implements IProductService.Service {
     await this.clickTabTabSpace(
       'text/ Diâmetro externo da mangueira de admissão '
     );
+    await this.clickTabTabSpace('text/ Tipo de sistema de combustível ');
 
     await this.clickTabSpace('text/ Linha ');
     await this.clickTabSpace('text/ Material da mangueira de intercooler ');
@@ -195,6 +208,7 @@ export class ProductService implements IProductService.Service {
     await this.clickTabSpace('text/ Homologação Anatel Nº ');
     await this.clickTabSpace('text/ Tipo de injeção ');
     await this.clickTabSpace('text/ Com tela digital ');
+    await this.clickTabSpace('text/ Quantidade de injetores ');
   }
 
   async registeringThirdStep(product: IProductInput) {
@@ -356,7 +370,8 @@ export class ProductService implements IProductService.Service {
   ) {
     if (!(await this.elementExists(selector))) return;
     const selected = ProductService.page.locator(selector);
-    await selected.click({ count: numberOfClicks, offset, delay: 10 });
+    await this.click(selector, numberOfClicks, offset);
+    // await selected.click({ count: numberOfClicks, offset, delay: 10 });
     await this.press('Space');
   }
 
@@ -387,7 +402,8 @@ export class ProductService implements IProductService.Service {
   ) {
     if (!(await this.elementExists(selector))) return;
     const selected = ProductService.page.locator(selector);
-    await selected.click({ count: numberOfClicks, offset: { x: 10, y: 0 } });
+    await this.click(selector, numberOfClicks, { x: 10, y: 0 });
+    // await selected.click({ count: numberOfClicks, offset: { x: 10, y: 0 } });
     await this.type(text);
   }
 
