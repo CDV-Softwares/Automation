@@ -204,10 +204,10 @@ export class ProductService implements IProductService.Service {
     await this.clickTabSpace('text/ Código OEM ');
     await this.clickTabSpace('text/ Código universal de produto ');
     await this.clickTabSpace('text/ Fabricante ');
-    await this.clickTabSpace('text/ Modelo alfanumérico ');
     await this.clickTabSpace('text/ Homologação Anatel Nº ');
     await this.clickTabSpace('text/ Tipo de injeção ');
     await this.clickTabSpace('text/ Com tela digital ');
+    await this.clickTabSpace('text/ Modelo alfanumérico ');
     await this.clickTabSpace('text/ Quantidade de injetores ');
   }
 
@@ -217,18 +217,59 @@ export class ProductService implements IProductService.Service {
     const thirdStepTitle = await this.waitForeverForElement(
       'text/Veículos compatíveis'
     );
-    const replace = (str: string) => str.toLowerCase().trim();
+
+    const replace = (str: string, brand: boolean = false) => {
+      //caso brand, usar o json aqui pra poder usar GM, ex, json[str] (ex: json['gm'] ou json['chevrolet'] pra sair chevrolet)
+      const target = brand ? str : str;
+      return target.toLowerCase().trim().replace('-', '');
+    };
+
+    const chooseCompatibilitieForWords = async (
+      className: string,
+      searchBy: string,
+      brand: boolean = false
+    ): Promise<boolean> => {
+      let res = false;
+      const searchByArr = searchBy.split(' ');
+      for (let index = searchByArr.length - 1; index > 0; index--) {
+        let toSearch = '';
+
+        for (let i = searchByArr.length - 1; i >= index; i--) {
+          if (
+            await chooseCompatibilitie(className, searchByArr[index], brand)
+          ) {
+            res = true;
+            break;
+          }
+          toSearch += ` ${searchByArr[i]}`;
+        }
+
+        if (await chooseCompatibilitie(className, toSearch, brand)) {
+          res = true;
+          break;
+        }
+        // if (toSearch.split('').length > index + 1) break;
+      }
+      return res;
+    };
 
     const chooseCompatibilitie = async (
       className: string,
-      searchBy: string
-    ) => {
-      const a = ProductService.page.$$(className);
-      for (const el of await a) {
+      searchBy: string,
+      brand: boolean = false
+    ): Promise<boolean> => {
+      const elements = ProductService.page.$$(className);
+      let res = false;
+      for (const el of await elements) {
         const text = await el.evaluate((e) => e.textContent);
         if (!text) break;
-        if (replace(text) == replace(searchBy)) await el.click();
+        if (replace(text, brand) == replace(searchBy, brand)) {
+          await el.click();
+          await this.wait(50);
+          res = true;
+        }
       }
+      return res;
     };
 
     await this.wait(500);
@@ -236,7 +277,12 @@ export class ProductService implements IProductService.Service {
     await this.press('Space');
     await this.wait(300);
 
-    await chooseCompatibilitie('.mat-option-text', brand);
+    const brandRes = await chooseCompatibilitieForWords(
+      '.mat-option-text',
+      brand,
+      true
+    );
+    if (!brandRes) return;
     await thirdStepTitle?.click();
     await thirdStepTitle?.click();
 
@@ -247,7 +293,11 @@ export class ProductService implements IProductService.Service {
     await this.press('Space');
     await this.wait(300);
 
-    await chooseCompatibilitie('.mat-option-text', model);
+    const modelRes = await chooseCompatibilitieForWords(
+      '.mat-option-text',
+      model
+    );
+    if (!modelRes) return;
     await thirdStepTitle?.click();
     await thirdStepTitle?.click();
 
@@ -258,7 +308,11 @@ export class ProductService implements IProductService.Service {
     await this.press('Space');
     await this.wait(300);
 
-    await chooseCompatibilitie('.mat-option-text', year);
+    const yearRes = await chooseCompatibilitieForWords(
+      '.mat-option-text',
+      year
+    );
+    if (!yearRes) return;
     await thirdStepTitle?.click();
     await thirdStepTitle?.click();
 
@@ -282,7 +336,7 @@ export class ProductService implements IProductService.Service {
     await this.wait(300);
 
     await this.click('text/ Selecionar ');
-    await this.click('text/ Avançar ');
+    // await this.click('text/ Avançar ');
   }
 
   async registeringFourthStep(product: IProductInput) {
@@ -322,13 +376,13 @@ export class ProductService implements IProductService.Service {
   }
 
   async clickTab(selector: string) {
-    if (!(await this.elementExists(selector))) return;
+    if (!(await this.elementExists(selector, 20))) return;
     await this.click(selector);
     await this.press('Tab');
   }
 
   async clickWriteTabSpaceDownSpace(selector: string, text: string) {
-    if (!(await this.elementExists(selector))) return;
+    if (!(await this.elementExists(selector, 20))) return;
     await this.clickAndWrite(selector, text);
     await this.press('Tab');
     await this.press('Space');
@@ -347,7 +401,7 @@ export class ProductService implements IProductService.Service {
   }
 
   async clickWriteTabSpaceSpace(selector: string, text: string) {
-    if (!(await this.elementExists(selector))) return;
+    if (!(await this.elementExists(selector, 20))) return;
     await this.clickAndWrite(selector, text, 1, { x: 0, y: 0 });
     await this.clickTabSpaceSpace(selector);
   }
@@ -368,11 +422,11 @@ export class ProductService implements IProductService.Service {
     numberOfClicks: number = 1,
     offset: { x: number; y: number } | undefined = undefined
   ) {
-    if (!(await this.elementExists(selector))) return;
+    if (!(await this.elementExists(selector, 20))) return;
     const selected = ProductService.page.locator(selector);
-    await this.click(selector, numberOfClicks, offset);
-    // await selected.click({ count: numberOfClicks, offset, delay: 10 });
+    await selected.click({ count: numberOfClicks, offset, delay: 10 });
     await this.press('Space');
+    await this.wait(50);
   }
 
   async elementExists(selector: string, delay: number = 200): Promise<boolean> {
@@ -387,11 +441,12 @@ export class ProductService implements IProductService.Service {
   }
 
   async clickWriteTabSpaceCm(selector: string, text: string) {
-    if (!(await this.elementExists(selector))) return;
+    if (!(await this.elementExists(selector, 40))) return;
     await this.clickAndWrite(selector, text, 1, { x: 0, y: 0 });
     await this.press('Tab');
     await this.press('Space');
     await this.click('text/ cm ');
+    await this.wait(50);
   }
 
   async clickAndWrite(
@@ -400,24 +455,26 @@ export class ProductService implements IProductService.Service {
     numberOfClicks: number = 1,
     offset: { x: number; y: number } | undefined = undefined
   ) {
-    if (!(await this.elementExists(selector))) return;
+    if (!(await this.elementExists(selector, 20))) return;
     const selected = ProductService.page.locator(selector);
-    await this.click(selector, numberOfClicks, { x: 10, y: 0 });
-    // await selected.click({ count: numberOfClicks, offset: { x: 10, y: 0 } });
+    await selected.click({ count: numberOfClicks, offset: { x: 10, y: 0 } });
     await this.type(text);
+    await this.wait(50);
   }
 
   async locateAndFill(selector: string, text: string) {
     if (!(await this.elementExists(selector))) return;
     const selected = ProductService.page.locator(selector);
     await selected.fill(text);
+    await this.wait(50);
   }
 
   async clickTabSpace(selector: string) {
-    if (!(await this.elementExists(selector))) return;
+    if (!(await this.elementExists(selector, 40))) return;
     await this.click(selector, 2);
     await this.press('Tab');
     await this.press('Space');
+    await this.wait(50);
   }
 
   async clickTabSpaceSpace(selector: string) {
@@ -426,14 +483,16 @@ export class ProductService implements IProductService.Service {
     await this.press('Tab');
     await this.press('Space');
     await this.press('Space');
+    await this.wait(50);
   }
 
   async clickTabTabSpace(selector: string) {
-    if (!(await this.elementExists(selector, 777))) return;
+    if (!(await this.elementExists(selector, 20))) return;
     await this.click(selector);
     await this.press('Tab');
     await this.press('Tab');
     await this.press('Space');
+    await this.wait(50);
   }
 
   async type(text: string) {
