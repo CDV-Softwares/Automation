@@ -16,6 +16,9 @@ const Input = ({ onInputChange, formInputs, placeholder, field }: Props): JSX.El
       value={formInputs[field]}
       name={field}
       placeholder={placeholder}
+      size={10}
+      className="ts"
+      style={{ padding: 4 }}
     />
   )
 }

@@ -59,85 +59,92 @@ function App(): JSX.Element {
   return (
     <main>
       <h1 className="ts">Automation</h1>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <Input
-          field="id"
-          formInputs={formInputs}
-          onInputChange={onInputChange}
-          placeholder="ex 1234"
-        />
-        <Input
-          field="name"
-          formInputs={formInputs}
-          onInputChange={onInputChange}
-          placeholder="name"
-        />
-        <Input
-          field="brand"
-          formInputs={formInputs}
-          onInputChange={onInputChange}
-          placeholder="brand"
-        />
-        <Input
-          field="model"
-          formInputs={formInputs}
-          onInputChange={onInputChange}
-          placeholder="model"
-        />
-        <Input
-          field="year"
-          formInputs={formInputs}
-          onInputChange={onInputChange}
-          placeholder="year"
-        />
-        <Input
-          field="code"
-          formInputs={formInputs}
-          onInputChange={onInputChange}
-          placeholder="ex 123938949233"
-        />
-        <Input
-          field="price"
-          formInputs={formInputs}
-          onInputChange={onInputChange}
-          placeholder="price"
-        />
-
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
+        <div style={{ display: 'flex', gap: 4 }}>
+          <Input
+            field="id"
+            formInputs={formInputs}
+            onInputChange={onInputChange}
+            placeholder="ex 1234"
+          />
+          <Input
+            field="code"
+            formInputs={formInputs}
+            onInputChange={onInputChange}
+            placeholder="ex 123938949233"
+          />
+          <Input
+            field="price"
+            formInputs={formInputs}
+            onInputChange={onInputChange}
+            placeholder="price"
+          />
+        </div>
+        <div style={{ display: 'flex', gap: 4 }}>
+          <Input
+            field="name"
+            formInputs={formInputs}
+            onInputChange={onInputChange}
+            placeholder="name"
+          />
+          <Input
+            field="brand"
+            formInputs={formInputs}
+            onInputChange={onInputChange}
+            placeholder="brand"
+          />
+          <Input
+            field="model"
+            formInputs={formInputs}
+            onInputChange={onInputChange}
+            placeholder="model"
+          />
+          <Input
+            field="year"
+            formInputs={formInputs}
+            onInputChange={onInputChange}
+            placeholder="year"
+          />
+        </div>
         <small className="ts">current title length: {totalLength}</small>
         {formState.error.length > 0 && <small className="err">{formState.error}</small>}
-        <Button
-          formState={formState}
-          onSubmit={onSubmit}
-          totalLength={totalLength}
-          endpoint="/api/first-step"
-        >
-          First Step
-        </Button>
-        <Button
-          formState={formState}
-          onSubmit={onSubmit}
-          totalLength={totalLength}
-          endpoint="/api/second-step"
-        >
-          Second Step
-        </Button>
-        <Button
-          formState={formState}
-          onSubmit={onSubmit}
-          totalLength={totalLength}
-          endpoint="/api/third-step"
-        >
-          Third Step
-        </Button>
-        <Button
-          formState={formState}
-          onSubmit={onSubmit}
-          totalLength={totalLength}
-          endpoint="/api/fourth-step"
-        >
-          Fourth Step
-        </Button>
-        <button onClick={clearInputs}>limpar inputs</button>
+        <div style={{ display: 'flex', gap: 4 }}>
+          <Button
+            formState={formState}
+            onSubmit={onSubmit}
+            totalLength={totalLength}
+            endpoint="/api/first-step"
+          >
+            First Step
+          </Button>
+          <Button
+            formState={formState}
+            onSubmit={onSubmit}
+            totalLength={totalLength}
+            endpoint="/api/second-step"
+          >
+            Second Step
+          </Button>
+          <Button
+            formState={formState}
+            onSubmit={onSubmit}
+            totalLength={totalLength}
+            endpoint="/api/third-step"
+          >
+            Third Step
+          </Button>
+          <Button
+            formState={formState}
+            onSubmit={onSubmit}
+            totalLength={totalLength}
+            endpoint="/api/fourth-step"
+          >
+            Fourth Step
+          </Button>
+          <button className="ts" onClick={clearInputs}>
+            limpar inputs
+          </button>
+        </div>
       </div>
       <footer>
         <small>by @vitosdeveloper</small>
