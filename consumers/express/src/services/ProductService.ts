@@ -189,6 +189,22 @@ export class ProductService implements IProductService.Service {
       'text/ Diâmetro interno da mangueira de admissão ',
       '1'
     );
+    await this.clickWriteTabSpaceDownSpace(
+      'text/ Diâmetro do porto de saída da bomba de direção ',
+      '1'
+    );
+    await this.clickWriteTabSpaceDownSpace(
+      'text/ Circunferência da carcaça ',
+      '1'
+    );
+    await this.clickWriteTabSpaceDownSpace(
+      'text/ Distância entre os pés de montagem ',
+      '1'
+    );
+    await this.clickWriteTabSpaceDownSpace(
+      'text/ Diâmetro do porto de entrada da bomba de direção ',
+      '1'
+    );
 
     await this.clickTabTabSpace('text/ Voltagem ');
     await this.clickTabTabSpace('text/ Material da mangueira de admissão ');
@@ -230,10 +246,9 @@ export class ProductService implements IProductService.Service {
       brand: boolean = false
     ): Promise<boolean> => {
       let res = false;
-      const searchByArr = searchBy.split(' ');
-      for (let index = searchByArr.length - 1; index > 0; index--) {
+      const searchByArr = searchBy.split(' ').reverse();
+      for (let index = 0; index < searchByArr.length; index++) {
         let toSearch = '';
-
         for (let i = searchByArr.length - 1; i >= index; i--) {
           if (
             await chooseCompatibilitie(className, searchByArr[index], brand)
@@ -243,12 +258,11 @@ export class ProductService implements IProductService.Service {
           }
           toSearch += ` ${searchByArr[i]}`;
         }
-
-        if (await chooseCompatibilitie(className, toSearch, brand)) {
+        if ((await chooseCompatibilitie(className, toSearch), brand)) {
           res = true;
           break;
         }
-        // if (toSearch.split('').length > index + 1) break;
+        if (toSearch.split('').length > index + 1) break;
       }
       return res;
     };
