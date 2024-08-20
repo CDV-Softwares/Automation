@@ -156,6 +156,8 @@ export class ProductService implements IProductService.Service {
     await this.clickSpace('text/ Grampos incluídos ');
 
     await this.clickWriteTabSpaceCm('text/ Comprimento ', '1');
+    await this.clickWriteTabSpaceCm('text/ Diâmetro da rosca ', '1');
+    await this.clickWriteTabSpaceCm('text/ Tamanho da rosca ', '1');
     await this.clickWriteTabSpaceCm('text/ Altura ', '1');
     await this.clickWriteTabSpaceCm('text/ Diâmetro ', '1');
     await this.clickWriteTabSpaceCm('text/ Diâmetro do corpo ', '1');

@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "dev": "concurrently \"npm run dev-express\" \"npm run dev-electron\"",
+    "dev-express": "cd ./consumers/express && npm run dev && cd ../..",
+    "dev-electron": "cd ./consumers/electron && npm run dev && cd ../..",
     "install": "npm run install-domain && npm run install-application && npm run install-electron && npm run install-express",
-    "install-domain": "cd ./core/domain && npm i && cd .. && cd ..",
-    "install-application": "cd ./core/application && npm i && cd .. && cd ..",
-    "install-electron": "cd ./consumers/electron && npm i && cd .. && cd ..",
-    "install-express": "cd ./consumers/express && npm i && cd .. && cd .."
+    "install-domain": "cd ./core/domain && npm i && cd ../../",
+    "install-application": "cd ./core/application && npm i && cd ../../",
+    "install-electron": "cd ./consumers/electron && npm i && cd ../../",
+    "install-express": "cd ./consumers/express && npm i && cd ../../"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
