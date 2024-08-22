@@ -5,18 +5,18 @@ import {
 import { IProduct, IProductInput } from '../../../shared/index';
 import { Product } from '../../domain/index';
 
-class ProductInput extends Product implements IProductInput {
+export class ProductInput extends Product implements IProductInput {
   public title: string;
   constructor(props: IProduct) {
-    super(
-      props.id,
-      props.name,
-      props.brand,
-      props.model,
-      props.year,
-      props.code,
-      props.price
-    );
+    super({
+      id: props.id,
+      name: props.name,
+      brand: props.brand,
+      model: props.model,
+      year: props.year,
+      code: props.code,
+      price: props.price,
+    });
     this.capitalizeAndRemoveSpace();
     this.title = `${this.name} ${this.brand} ${this.model} ${this.year} ${this.code}`;
     this.validateFields();
@@ -31,8 +31,8 @@ class ProductInput extends Product implements IProductInput {
   }
 
   private capitalizeAndRemoveSpace() {
-    this.capitalizeNameFields();
     this.removeSpaceFromEveryField();
+    this.capitalizeNameFields();
   }
 
   private capitalizeNameFields() {

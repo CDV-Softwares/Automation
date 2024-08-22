@@ -6,16 +6,26 @@
     "dev": "concurrently \"npm run dev-express\" \"npm run dev-electron\"",
     "dev-express": "cd ./consumers/express && npm run dev && cd ../..",
     "dev-electron": "cd ./consumers/electron && npm run dev && cd ../..",
-    "install": "npm run install-domain && npm run install-application && npm run install-electron && npm run install-express",
+    "install": "npm install && npm run install-domain && npm run install-application && npm run install-electron && npm run install-express",
     "install-domain": "cd ./core/domain && npm i && cd ../../",
     "install-application": "cd ./core/application && npm i && cd ../../",
     "install-electron": "cd ./consumers/electron && npm i && cd ../../",
-    "install-express": "cd ./consumers/express && npm i && cd ../../"
+    "install-express": "cd ./consumers/express && npm i && cd ../../",
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "@babel/preset-typescript": "^7.24.7",
+    "@types/jest": "^29.5.12",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0"
   }
 }
